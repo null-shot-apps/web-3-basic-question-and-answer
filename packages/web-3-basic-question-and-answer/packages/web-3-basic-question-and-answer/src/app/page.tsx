@@ -74,8 +74,8 @@ contract VulnerableWithdraw {
         uint256 amount = balances[msg.sender];
         
         // ⚠️ DANGER: External call before state update
-        (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+        (bool success, ) = msg.sender.call{value: amount}(\"\");
+        require(success, \"Transfer failed\");
         
         // State updated AFTER external call
         balances[msg.sender] = 0;
@@ -100,18 +100,18 @@ contract SecureWithdraw {
     function withdraw() external {
         // 1. CHECKS: Validate conditions
         uint256 amount = balances[msg.sender];
-        require(amount > 0, "No balance");
+        require(amount > 0, \"No balance\");
         
         // 2. EFFECTS: Update state BEFORE external call
         balances[msg.sender] = 0;
         
         // 3. INTERACTIONS: External call happens last
-        (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+        (bool success, ) = msg.sender.call{value: amount}(\"\");
+        require(success, \"Transfer failed\");
     }
     
     // Alternative: Use ReentrancyGuard from OpenZeppelin
-    // import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+    // import \"@openzeppelin/contracts/security/ReentrancyGuard.sol\";
     // contract SecureWithdraw is ReentrancyGuard {
     //     function withdraw() external nonReentrant { ... }
     // }
@@ -171,4 +171,6 @@ contract SecureWithdraw {
     </div>
   );
 }
+
+
 
